@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "react-scripts build",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "server": "node server/server.js",
-    "server:dev": "nodemon server/server.js",
-    "start": "react-scripts start"
+    "server:dev": "nodemon server/server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
