@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+// Production URL'sini Netlify site URL'sine göre ayarlayalım
 const API_URL = import.meta.env.PROD 
-  ? '/.netlify/functions/api'  // Production'da Netlify function path'i
-  : 'http://localhost:5000/api'; // Development ortamı
+  ? 'https://robinyaman.netlify.app/api'  // Production URL
+  : 'http://localhost:5000/api'; // Development URL
 
+console.log('Current environment:', import.meta.env.MODE);
 console.log('API URL:', API_URL);
 
 // Axios instance configuration
@@ -33,6 +35,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.error('API Error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+
     if (error.response?.status === 400) {
       return Promise.reject(new Error(error.response.data.message));
     }

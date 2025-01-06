@@ -1,18 +1,10 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  functions = "netlify/functions"
-
-[functions]
-  external_node_modules = ["express"]
-  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  to = "http://localhost:4000/api/:splat"
   status = 200
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200 
+  force = true
+  headers = {Access-Control-Allow-Origin = "*"} 

@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb+srv://Robin:Yaman500@robinscluster.ueryx.mongodb.net/Portfolio?retryWrites=true&w=majority&appName=RobinsCluster",
+    "JWT_SECRET": "portfolio-secret-key-2024",
+    "NODE_ENV": "production"
+  }
+} 
