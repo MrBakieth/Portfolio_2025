@@ -8,29 +8,19 @@
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
-  headers = { Access-Control-Allow-Origin = "*" }
+  headers = {
+    Access-Control-Allow-Origin = "*",
+    Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept",
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+  }
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
-
-[build.processing.images]
-  compress = true
+[build.environment]
+  NODE_VERSION = "18.17.0"
 
 [functions]
   external_node_modules = ["express", "mongoose", "cors", "jsonwebtoken", "bcryptjs"]
