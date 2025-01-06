@@ -75,7 +75,7 @@ const certifications = [
 ];
 
 const languages = [
-  { name: 'Türkçe', level: 'Anadil' },
+  { name: 'Türkçe', level: 'Ana dil' },
   { name: 'İngilizce', level: 'B2' },
 ];
 

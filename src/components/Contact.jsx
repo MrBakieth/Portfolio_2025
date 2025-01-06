@@ -137,8 +137,8 @@ const Contact = () => {
       }}
     >
       <Helmet>
-        <title>İletişim - Robin Yaman</title>
-        <meta name="description" content="Robin Yaman ile iletişime geçin. Web geliştirme projeleriniz için benimle iletişime geçebilirsiniz." />
+        <title>İletişim - H.Furkan Yaman</title>
+        <meta name="description" content="H.Furkan Yaman ile iletişime geçin. Web geliştirme projeleriniz için benimle iletişime geçebilirsiniz." />
       </Helmet>
 
       {/* Animated background lights */}
