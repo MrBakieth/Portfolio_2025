@@ -2,15 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Message = require('../models/Message');
 const { protect, admin } = require('../middleware/authMiddleware');
-const { sendEmail } = require('../services/emailService');
 
 // @desc    Create new message
 // @route   POST /api/messages
 // @access  Public
 router.post('/', async (req, res) => {
   try {
+    console.log('Received message request:', req.body);
+    
     const { name, email, phone, subject, message } = req.body;
     
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ 
+        message: 'Lütfen tüm gerekli alanları doldurun.' 
+      });
+    }
+
+    // E-posta formatını kontrol et
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        message: 'Geçerli bir e-posta adresi girin.' 
+      });
+    }
+
+    console.log('Creating message in database...');
     // Veritabanına kaydet
     const newMessage = await Message.create({
       name,
@@ -19,20 +35,30 @@ router.post('/', async (req, res) => {
       subject,
       message,
     });
+    console.log('Message created in database:', newMessage);
 
-    // E-posta gönder
-    await sendEmail({
-      name,
-      email,
-      phone,
-      subject,
-      message
+    res.status(201).json({
+      success: true,
+      message: 'Mesajınız başarıyla gönderildi.',
+      data: newMessage
+    });
+  } catch (error) {
+    console.error('Message creation error:', {
+      error: error.message,
+      stack: error.stack
     });
 
-    res.status(201).json(newMessage);
-  } catch (error) {
-    console.error('Message creation error:', error);
-    res.status(500).json({ message: error.message });
+    // MongoDB bağlantı hatası kontrolü
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return res.status(500).json({ 
+        message: 'Veritabanı bağlantı hatası. Lütfen daha sonra tekrar deneyin.' 
+      });
+    }
+
+    res.status(500).json({ 
+      message: 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

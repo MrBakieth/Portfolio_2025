@@ -54,17 +54,47 @@ const Contact = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setError('Lütfen adınızı ve soyadınızı girin.');
+      return false;
+    }
+    if (!formData.email.trim()) {
+      setError('Lütfen e-posta adresinizi girin.');
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('Lütfen geçerli bir e-posta adresi girin.');
+      return false;
+    }
+    if (!formData.subject.trim()) {
+      setError('Lütfen konu başlığı girin.');
+      return false;
+    }
+    if (!formData.message.trim()) {
+      setError('Lütfen mesajınızı girin.');
+      return false;
+    }
+    return true;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    setError('');
+    setSuccess(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       setLoading(true);
@@ -81,9 +111,16 @@ const Contact = () => {
         subject: '',
         message: '',
       });
+
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
     } catch (error) {
-      console.error('Form submission error:', error);
-      setError('Form gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      setError(error.message);
+      
+      setTimeout(() => {
+        setError('');
+      }, 5000);
     } finally {
       setLoading(false);
     }
@@ -199,14 +236,43 @@ const Contact = () => {
             }}
           >
             {success && (
-              <Alert severity="success" sx={{ mb: 3 }}>
-                Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.
-              </Alert>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                <Alert 
+                  severity="success" 
+                  sx={{ 
+                    mb: 3,
+                    '& .MuiAlert-message': {
+                      color: '#2e7d32'
+                    }
+                  }}
+                >
+                  Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.
+                </Alert>
+              </motion.div>
             )}
+            
             {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                <Alert 
+                  severity="error" 
+                  sx={{ 
+                    mb: 3,
+                    '& .MuiAlert-message': {
+                      color: '#d32f2f'
+                    }
+                  }}
+                >
+                  {error}
+                </Alert>
+              </motion.div>
             )}
 
             <Box component="form" onSubmit={handleSubmit}>
