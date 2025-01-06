@@ -1,12 +1,19 @@
 import axios from 'axios';
 
+// Development'da loglama için yardımcı fonksiyon
+const log = (message, data) => {
+  if (import.meta.env.DEV) {
+    console.log(message, data);
+  }
+};
+
 // Production ve development için API URL'lerini ayarla
 const API_URL = import.meta.env.PROD 
   ? 'https://robinyaman.netlify.app/.netlify/functions/api'  // Production URL
   : 'http://localhost:5000/api'; // Development URL
 
-console.log('Current environment:', import.meta.env.MODE);
-console.log('API URL:', API_URL);
+log('Current environment:', import.meta.env.MODE);
+log('API URL:', API_URL);
 
 // Axios instance configuration
 const api = axios.create({
@@ -20,7 +27,7 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    console.log('Making request to:', config.url);
+    log('Making request to:', config.url);
     const token = localStorage.getItem('adminToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -28,7 +35,9 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('Request error:', error);
+    if (import.meta.env.DEV) {
+      console.error('Request error:', error);
+    }
     return Promise.reject(error);
   }
 );
@@ -37,12 +46,14 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', {
-      url: error.config?.url,
-      status: error.response?.status,
-      data: error.response?.data,
-      message: error.message
-    });
+    if (import.meta.env.DEV) {
+      console.error('API Error:', {
+        url: error.config?.url,
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
+    }
 
     if (error.response?.status === 400) {
       return Promise.reject(new Error(error.response.data.message));
