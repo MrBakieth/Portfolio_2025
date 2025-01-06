@@ -18,6 +18,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { messageService, projectService } from '../services/api';
 import { Helmet } from 'react-helmet-async';
+import PackageCard from './PackageCard';
+import { packages } from './PackageCard';
 
 const Contact = () => {
   const [formType, setFormType] = useState('contact');
@@ -427,12 +429,15 @@ const Contact = () => {
                           {/* Desktop version */}
                           <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                             <Grid container spacing={3}>
-                              <Grid item xs={12} md={4}>
-                                <PackageCard
-                                  selected={formData.packageType}
-                                  onSelect={(id) => setFormData({ ...formData, packageType: id })}
-                                />
-                              </Grid>
+                              {packages.map((pkg) => (
+                                <Grid item xs={12} md={4} key={pkg.id}>
+                                  <PackageCard
+                                    {...pkg}
+                                    selected={formData.packageType === pkg.id}
+                                    onSelect={() => setFormData({ ...formData, packageType: pkg.id })}
+                                  />
+                                </Grid>
+                              ))}
                             </Grid>
                           </Box>
 

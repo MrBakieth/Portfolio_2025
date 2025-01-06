@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 
-const packages = [
+export const packages = [
   {
     id: 'basic',
     name: 'Temel Paket',
@@ -28,11 +28,11 @@ const packages = [
   }
 ];
 
-const PackageCard = ({ selected, onSelect }) => (
+const PackageCard = ({ id, name, price, description, features, color, selected, onSelect }) => (
   <motion.div
     whileHover={{ scale: 1.02, y: -5 }}
     whileTap={{ scale: 0.98 }}
-    onClick={() => onSelect(selected)}
+    onClick={() => onSelect(id)}
     style={{
       cursor: 'pointer',
       position: 'relative',
@@ -95,7 +95,7 @@ const PackageCard = ({ selected, onSelect }) => (
           transition: 'all 0.3s ease'
         }}
       >
-        {packages.find(p => p.id === selected)?.name}
+        {name}
       </Typography>
       <Typography
         variant="h3"
@@ -105,7 +105,7 @@ const PackageCard = ({ selected, onSelect }) => (
           transition: 'all 0.3s ease'
         }}
       >
-        {packages.find(p => p.id === selected)?.price}
+        {price}
       </Typography>
       <Typography
         variant="body1"
@@ -114,7 +114,7 @@ const PackageCard = ({ selected, onSelect }) => (
           mt: 0.5
         }}
       >
-        {packages.find(p => p.id === selected)?.description}
+        {description}
       </Typography>
       <Box
         sx={{
@@ -124,7 +124,7 @@ const PackageCard = ({ selected, onSelect }) => (
           mt: 1
         }}
       >
-        {packages.find(p => p.id === selected)?.features.map((feature, index) => (
+        {features.map((feature, index) => (
           <Typography
             key={index}
             variant="caption"
