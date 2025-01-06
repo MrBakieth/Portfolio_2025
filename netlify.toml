@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/.netlify/functions/api/*"
+  from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
@@ -15,8 +15,9 @@
   status = 200
 
 [functions]
-  external_node_modules = ["express"]
+  external_node_modules = ["express", "mongoose", "cors", "jsonwebtoken", "bcryptjs"]
   node_bundler = "esbuild"
+  included_files = ["server/**"]
 
 [[headers]]
   for = "/*"
@@ -25,4 +26,6 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Access-Control-Allow-Origin = "*" 
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization" 

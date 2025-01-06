@@ -9,7 +9,7 @@ const log = (message, data) => {
 
 // Production ve development için API URL'lerini ayarla
 const API_URL = import.meta.env.PROD 
-  ? 'https://robinyaman.netlify.app/.netlify/functions/api'  // Production URL
+  ? '/api'  // Production'da Netlify proxy kullanacak
   : 'http://localhost:5000/api'; // Development URL
 
 log('Current environment:', import.meta.env.MODE);

@@ -8,15 +8,17 @@ const projectRoutes = require('../../server/routes/projectRoutes');
 
 const app = express();
 
-// CORS configuration for all devices
+// CORS configuration
 app.use(cors({
-  origin: true, // Allow all origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Explicitly allow headers
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
-// Parse JSON bodies with increased limit
+// Parse JSON bodies
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -24,18 +26,25 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   console.log('Headers:', req.headers);
-  console.log('Request Body:', req.body);
+  if (req.method !== 'GET') {
+    console.log('Request Body:', req.body);
+  }
   next();
 });
 
 // Health check endpoint
-app.get('/.netlify/functions/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // MongoDB connection with retry logic
 const connectDB = async () => {
   try {
+    if (mongoose.connection.readyState === 1) {
+      console.log('MongoDB already connected');
+      return;
+    }
+
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -50,9 +59,20 @@ const connectDB = async () => {
   }
 };
 
-connectDB();
+// Connect to MongoDB before handling any requests
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      await connectDB();
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error);
+      return res.status(500).json({ message: 'Database connection error' });
+    }
+  }
+  next();
+});
 
-// Routes without double path
+// Routes
 app.use('/auth', authRoutes);
 app.use('/messages', messageRoutes);
 app.use('/projects', projectRoutes);
@@ -64,7 +84,7 @@ app.use((err, req, res, next) => {
     stack: err.stack,
     path: req.path,
     method: req.method,
-    body: req.body,
+    body: req.method !== 'GET' ? req.body : undefined,
     headers: req.headers
   });
   
@@ -80,4 +100,9 @@ app.use((req, res) => {
 });
 
 // Export the serverless function
-module.exports.handler = serverless(app); 
+const handler = serverless(app);
+module.exports.handler = async (event, context) => {
+  // Keep alive MongoDB connection
+  context.callbackWaitsForEmptyEventLoop = false;
+  return handler(event, context);
+}; 
