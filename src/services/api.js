@@ -4,6 +4,8 @@ const API_URL = import.meta.env.PROD
   ? '/.netlify/functions/api'  // Production'da Netlify function path'i
   : 'http://localhost:5000/api'; // Development ortamı
 
+console.log('API URL:', API_URL); // API URL'sini logla
+
 // Axios instance
 const api = axios.create({
   baseURL: API_URL,
@@ -15,6 +17,7 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    console.log('Making request to:', config.url, 'with data:', config.data);
     const token = localStorage.getItem('adminToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -22,6 +25,24 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('Request error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => {
+    console.log('Response received:', response.data);
+    return response;
+  },
+  (error) => {
+    console.error('Response error:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      url: error.config?.url
+    });
     return Promise.reject(error);
   }
 );
@@ -29,8 +50,15 @@ api.interceptors.request.use(
 // Auth services
 export const authService = {
   login: async (username, password) => {
-    const response = await api.post('/auth/login', { username, password });
-    return response.data;
+    try {
+      console.log('Attempting login for user:', username);
+      const response = await api.post('/auth/login', { username, password });
+      console.log('Login successful');
+      return response.data;
+    } catch (error) {
+      console.error('Login error:', error.response?.data || error.message);
+      throw error;
+    }
   },
   getProfile: async () => {
     const response = await api.get('/auth/profile');
@@ -45,8 +73,15 @@ export const messageService = {
     return response.data;
   },
   sendMessage: async (messageData) => {
-    const response = await api.post('/messages', messageData);
-    return response.data;
+    try {
+      console.log('Sending message:', messageData);
+      const response = await api.post('/messages', messageData);
+      console.log('Message sent successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error sending message:', error.response?.data || error.message);
+      throw error;
+    }
   },
   markAsRead: async (id) => {
     const response = await api.put(`/messages/${id}/read`);
@@ -65,8 +100,15 @@ export const projectService = {
     return response.data;
   },
   createProject: async (projectData) => {
-    const response = await api.post('/projects', projectData);
-    return response.data;
+    try {
+      console.log('Creating project:', projectData);
+      const response = await api.post('/projects', projectData);
+      console.log('Project created successfully:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating project:', error.response?.data || error.message);
+      throw error;
+    }
   },
   updateStatus: async (id, status) => {
     const response = await api.put(`/projects/${id}/status`, { status });
