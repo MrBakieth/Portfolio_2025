@@ -8,8 +8,8 @@ const log = (message, data) => {
 };
 
 // Production ve development için API URL'lerini ayarla
-const API_URL = import.meta.env.PROD 
-  ? 'https://hfurkanyaman.netlify.app/api'  // Production URL - simplified path
+const API_URL = import.meta.env.MODE === 'production'
+  ? 'https://hfurkanyaman.netlify.app/api'  // Production URL
   : 'http://localhost:5000/api'; // Development URL
 
 log('Current environment:', import.meta.env.MODE);
