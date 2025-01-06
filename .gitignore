@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 /node_modules
 /.pnp
@@ -21,6 +22,21 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+=======
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+>>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
 
 # Editor directories and files
 .vscode/*
@@ -32,3 +48,10 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
+=======
+
+.env
+.env.local
+.DS_Store
+>>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
