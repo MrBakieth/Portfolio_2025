@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+// Production ve development için API URL'lerini ayarla
 const API_URL = import.meta.env.PROD 
-  ? '/api'  // Production'da Netlify Functions kullanacağız
-  : 'http://localhost:5000/api'; // Development ortamı
+  ? 'https://robinyaman.netlify.app/.netlify/functions/api'  // Production URL
+  : 'http://localhost:5000/api'; // Development URL
 
 console.log('Current environment:', import.meta.env.MODE);
 console.log('API URL:', API_URL);
@@ -19,6 +20,7 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    console.log('Making request to:', config.url);
     const token = localStorage.getItem('adminToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -26,6 +28,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('Request error:', error);
     return Promise.reject(error);
   }
 );
@@ -35,6 +38,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', {
+      url: error.config?.url,
       status: error.response?.status,
       data: error.response?.data,
       message: error.message
@@ -45,7 +49,7 @@ api.interceptors.response.use(
     }
     
     if (!error.response) {
-      return Promise.reject(new Error('Sunucuya bağlanılamıyor. Lütfen internet bağlantınızı kontrol edin.'));
+      return Promise.reject(new Error('Sunucuya bağlanılamıyor. Lütfen daha sonra tekrar deneyin.'));
     }
     
     return Promise.reject(new Error('Bir hata oluştu. Lütfen daha sonra tekrar deneyin.'));
