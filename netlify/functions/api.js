@@ -10,7 +10,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: ['https://hfurkanyaman.netlify.app', 'http://localhost:5173', 'http://localhost:5174'],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
