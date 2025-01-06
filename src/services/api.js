@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// Production URL'sini Vercel deployment URL'si ile güncelle
 const API_URL = import.meta.env.PROD 
-  ? 'https://portfolio-2025-api.vercel.app/api'  // Vercel deployment URL
-  : 'http://localhost:5000/api'; // Development URL
+  ? '/api'  // Production'da Netlify Functions kullanacağız
+  : 'http://localhost:5000/api'; // Development ortamı
 
 console.log('Current environment:', import.meta.env.MODE);
 console.log('API URL:', API_URL);
@@ -15,7 +14,6 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 15000, // 15 saniye timeout
-  withCredentials: true // CORS için gerekli
 });
 
 // Request interceptor
