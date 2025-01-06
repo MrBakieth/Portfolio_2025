@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import {
   Container,
   Grid,
   Paper,
-  TextField,
+  TextField as MuiTextField,
   Button,
   Typography,
   Box,
@@ -20,6 +20,32 @@ import { messageService, projectService } from '../services/api';
 import { Helmet } from 'react-helmet-async';
 import PackageCard from './PackageCard';
 import { packages } from './PackageCard';
+
+const CustomTextField = memo(({ ...props }) => (
+  <MuiTextField
+    {...props}
+    sx={{
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: 'rgba(156, 39, 176, 0.2)',
+        },
+        '&:hover fieldset': {
+          borderColor: 'rgba(156, 39, 176, 0.4)',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#ba68c8',
+        },
+      },
+      '& .MuiInputLabel-root': {
+        color: 'rgba(255, 255, 255, 0.7)',
+      },
+      '& .MuiOutlinedInput-input': {
+        color: 'white',
+      },
+      ...props.sx
+    }}
+  />
+));
 
 const Contact = () => {
   const [formType, setFormType] = useState('contact');
@@ -45,24 +71,31 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     try {
       setLoading(true);
       setError('');
       setSuccess(false);
 
-      if (formType === 'contact') {
-        const { name, email, subject, message } = formData;
-        await messageService.sendMessage({ name, email, subject, message });
-      } else {
-        const { name, email, company, packageType, message } = formData;
-        await projectService.createProject({
-          name,
-          email,
-          company,
-          packageType,
-          details: message,
-        });
-      }
+      const formPayload = formType === 'contact'
+        ? {
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject,
+            message: formData.message
+          }
+        : {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            packageType: formData.packageType,
+            details: formData.message
+          };
+
+      await (formType === 'contact'
+        ? messageService.sendMessage(formPayload)
+        : projectService.createProject(formPayload));
 
       setSuccess(true);
       setFormData({
@@ -74,6 +107,7 @@ const Contact = () => {
         packageType: 'basic',
       });
     } catch (error) {
+      console.error('Form submission error:', error);
       setError('Form gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
@@ -87,6 +121,7 @@ const Contact = () => {
         position: 'relative',
         overflow: 'hidden',
         background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+        WebkitTapHighlightColor: 'transparent',
       }}
     >
       {/* Animated background lights */}
@@ -99,10 +134,10 @@ const Contact = () => {
           bottom: 0,
           overflow: 'hidden',
           zIndex: 0,
+          display: { xs: 'none', md: 'block' },
         }}
       >
-        {[...Array(5)].map((_, i) => {
-          // Pre-calculate random values
+        {[...Array(3)].map((_, i) => {
           const xPos = (i * 20) + 10;
           const yPos = (i * 15) + 10;
           const width = 300 + (i * 50);
@@ -117,21 +152,21 @@ const Contact = () => {
                 background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
                 borderRadius: '50%',
                 filter: 'blur(100px)',
-                opacity: 0.15,
+                opacity: 0.1,
                 width,
                 height,
               }}
               animate={{
                 x: [xPos, -xPos, xPos],
                 y: [yPos, -yPos, yPos],
-                scale: [1, 1.8, 1],
+                scale: [1, 1.5, 1],
                 rotate: [0, 180, 0],
               }}
               transition={{
                 duration: duration,
                 repeat: Infinity,
-                repeatType: 'reverse',
-                ease: "easeInOut"
+                repeatType: "reverse",
+                ease: "linear"
               }}
               initial={{
                 x: xPos,
@@ -142,11 +177,18 @@ const Contact = () => {
         })}
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 12, position: 'relative', zIndex: 1 }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: { xs: 10, md: 12 },
+          position: 'relative', 
+          zIndex: 1 
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
         >
           <Typography
             variant="h2"
@@ -154,12 +196,13 @@ const Contact = () => {
             align="center"
             sx={{
               fontWeight: 'bold',
-              mb: 6,
-              pt: 4,
+              mb: { xs: 3, md: 6 },
+              pt: { xs: 2, md: 4 },
+              fontSize: { xs: '2rem', md: '3.75rem' },
               background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 20px rgba(156, 39, 176, 0.3)',
+              textShadow: { xs: 'none', md: '0 0 20px rgba(156, 39, 176, 0.3)' },
             }}
           >
             İletişim
@@ -168,10 +211,10 @@ const Contact = () => {
           <Paper
             elevation={3}
             sx={{
-              p: 4,
+              p: { xs: 2, md: 4 },
               bgcolor: 'rgba(45, 45, 45, 0.95)',
               border: '1px solid rgba(156, 39, 176, 0.2)',
-              backdropFilter: 'blur(10px)',
+              backdropFilter: { xs: 'none', md: 'blur(10px)' },
               position: 'relative',
             }}
           >
@@ -289,7 +332,7 @@ const Contact = () => {
                 >
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                      <TextField
+                      <CustomTextField
                         required
                         fullWidth
                         label="Ad Soyad"
@@ -319,7 +362,7 @@ const Contact = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
+                      <CustomTextField
                         required
                         fullWidth
                         label="E-posta"
@@ -351,7 +394,7 @@ const Contact = () => {
                     </Grid>
                     {formType === 'contact' ? (
                       <Grid item xs={12}>
-                        <TextField
+                        <CustomTextField
                           required
                           fullWidth
                           label="Konu"
@@ -383,7 +426,7 @@ const Contact = () => {
                     ) : (
                       <>
                         <Grid item xs={12}>
-                          <TextField
+                          <CustomTextField
                             fullWidth
                             label="Şirket Adı (Opsiyonel)"
                             name="company"
@@ -452,6 +495,7 @@ const Contact = () => {
                                   <motion.div
                                     key={pkg.id}
                                     whileTap={{ scale: 0.98 }}
+                                    transition={{ duration: 0.2 }}
                                   >
                                     <FormControlLabel
                                       value={pkg.id}
@@ -464,12 +508,13 @@ const Contact = () => {
                                         />
                                       }
                                       label={
-                                        <Box>
+                                        <Box sx={{ ml: 1 }}>
                                           <Typography
                                             variant="h6"
                                             sx={{
                                               color: formData.packageType === pkg.id ? '#ba68c8' : 'white',
                                               fontWeight: formData.packageType === pkg.id ? 600 : 400,
+                                              fontSize: '1.1rem',
                                             }}
                                           >
                                             {pkg.name} - {pkg.price}
@@ -478,7 +523,8 @@ const Contact = () => {
                                             variant="body2"
                                             sx={{
                                               color: 'rgba(255, 255, 255, 0.7)',
-                                              mt: 0.5
+                                              mt: 0.5,
+                                              fontSize: '0.875rem',
                                             }}
                                           >
                                             {pkg.description}
@@ -487,8 +533,8 @@ const Contact = () => {
                                             sx={{
                                               display: 'flex',
                                               flexWrap: 'wrap',
-                                              gap: 1,
-                                              mt: 1
+                                              gap: 0.5,
+                                              mt: 0.5
                                             }}
                                           >
                                             {pkg.features.map((feature, index) => (
@@ -500,6 +546,7 @@ const Contact = () => {
                                                   display: 'flex',
                                                   alignItems: 'center',
                                                   gap: 0.5,
+                                                  fontSize: '0.75rem',
                                                 }}
                                               >
                                                 <span style={{ color: '#ba68c8' }}>✓</span>
@@ -512,7 +559,7 @@ const Contact = () => {
                                       sx={{
                                         width: '100%',
                                         margin: 0,
-                                        padding: 2,
+                                        padding: 1.5,
                                         borderRadius: 2,
                                         background: formData.packageType === pkg.id 
                                           ? 'rgba(156, 39, 176, 0.1)'
@@ -521,8 +568,9 @@ const Contact = () => {
                                         borderColor: formData.packageType === pkg.id 
                                           ? 'rgba(156, 39, 176, 0.3)'
                                           : 'rgba(255, 255, 255, 0.1)',
-                                        transition: 'all 0.3s ease',
-                                        mb: 2,
+                                        transition: 'all 0.2s ease',
+                                        mb: 1.5,
+                                        alignItems: 'flex-start',
                                       }}
                                     />
                                   </motion.div>
@@ -534,7 +582,7 @@ const Contact = () => {
                       </>
                     )}
                     <Grid item xs={12}>
-                      <TextField
+                      <CustomTextField
                         required
                         fullWidth
                         multiline
@@ -598,4 +646,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default memo(Contact); 

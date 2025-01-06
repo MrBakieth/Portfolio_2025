@@ -2,6 +2,104 @@ import { Container, Typography, Grid, Card, CardContent, CardMedia, CardActions,
 import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LaunchIcon from '@mui/icons-material/Launch';
+import { memo } from 'react';
+
+const ProjectCard = memo(({ project }) => (
+  <Card 
+    sx={{ 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column',
+      background: 'rgba(45, 45, 45, 0.5)',
+      backdropFilter: { xs: 'none', md: 'blur(10px)' },
+      border: '1px solid rgba(156, 39, 176, 0.2)',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      '&:hover': {
+        transform: 'translateY(-10px)',
+        boxShadow: '0 20px 40px rgba(156, 39, 176, 0.3)',
+      },
+    }}
+  >
+    <CardMedia
+      component="img"
+      height="200"
+      image={project.image}
+      alt={project.title}
+      sx={{
+        borderBottom: '1px solid rgba(156, 39, 176, 0.2)',
+      }}
+    />
+    <CardContent sx={{ flexGrow: 1, p: 3 }}>
+      <Typography 
+        gutterBottom 
+        variant="h5" 
+        component="h2"
+        sx={{
+          color: '#ba68c8',
+          fontWeight: 600,
+        }}
+      >
+        {project.title}
+      </Typography>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          color: 'rgba(255, 255, 255, 0.7)',
+          mb: 2,
+        }}
+      >
+        {project.description}
+      </Typography>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+        {project.tags.map((tag, idx) => (
+          <Typography
+            key={idx}
+            variant="caption"
+            sx={{
+              background: 'rgba(156, 39, 176, 0.1)',
+              color: '#ba68c8',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              border: '1px solid rgba(156, 39, 176, 0.2)',
+            }}
+          >
+            {tag}
+          </Typography>
+        ))}
+      </Box>
+    </CardContent>
+    <CardActions sx={{ p: 2, pt: 0 }}>
+      <Button 
+        size="small" 
+        startIcon={<LaunchIcon />}
+        href={project.demoLink}
+        target="_blank"
+        sx={{
+          color: '#ba68c8',
+          '&:hover': {
+            background: 'rgba(156, 39, 176, 0.1)',
+          },
+        }}
+      >
+        Demo
+      </Button>
+      <Button 
+        size="small" 
+        startIcon={<GitHubIcon />}
+        href={project.codeLink}
+        target="_blank"
+        sx={{
+          color: '#ba68c8',
+          '&:hover': {
+            background: 'rgba(156, 39, 176, 0.1)',
+          },
+        }}
+      >
+        Kod
+      </Button>
+    </CardActions>
+  </Card>
+));
 
 const Projects = () => {
   const projects = [
@@ -34,15 +132,14 @@ const Projects = () => {
   return (
     <Box
       sx={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
         minHeight: '100vh',
-        pt: { xs: 10, md: 12 },
-        pb: 6,
         position: 'relative',
         overflow: 'hidden',
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+        WebkitTapHighlightColor: 'transparent',
       }}
     >
-      {/* Animated background elements */}
+      {/* Animated background lights */}
       <Box
         sx={{
           position: 'absolute',
@@ -52,10 +149,10 @@ const Projects = () => {
           bottom: 0,
           overflow: 'hidden',
           zIndex: 0,
+          display: { xs: 'none', md: 'block' },
         }}
       >
-        {[...Array(5)].map((_, i) => {
-          // Pre-calculate random values
+        {[...Array(3)].map((_, i) => {
           const xPos = (i * 20) + 10;
           const yPos = (i * 15) + 10;
           const width = 300 + (i * 50);
@@ -70,21 +167,21 @@ const Projects = () => {
                 background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
                 borderRadius: '50%',
                 filter: 'blur(100px)',
-                opacity: 0.15,
+                opacity: 0.1,
                 width,
                 height,
               }}
               animate={{
                 x: [xPos, -xPos, xPos],
                 y: [yPos, -yPos, yPos],
-                scale: [1, 1.8, 1],
+                scale: [1, 1.5, 1],
                 rotate: [0, 180, 0],
               }}
               transition={{
                 duration: duration,
                 repeat: Infinity,
-                repeatType: 'reverse',
-                ease: "easeInOut"
+                repeatType: "reverse",
+                ease: "linear"
               }}
               initial={{
                 x: xPos,
@@ -95,11 +192,17 @@ const Projects = () => {
         })}
       </Box>
 
-      <Container sx={{ position: 'relative', zIndex: 1 }}>
+      <Container 
+        sx={{ 
+          position: 'relative', 
+          zIndex: 1,
+          py: { xs: 10, md: 12 },
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.3 }}
         >
           <Typography 
             variant="h3" 
@@ -109,7 +212,10 @@ const Projects = () => {
               background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              mb: 6,
+              mb: { xs: 3, md: 6 },
+              fontSize: { xs: '2rem', md: '3rem' },
+              fontWeight: 'bold',
+              textShadow: { xs: 'none', md: '0 0 20px rgba(156, 39, 176, 0.3)' },
             }}
           >
             Projelerim
@@ -121,102 +227,9 @@ const Projects = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.2 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
                 >
-                  <Card 
-                    sx={{ 
-                      height: '100%', 
-                      display: 'flex', 
-                      flexDirection: 'column',
-                      background: 'rgba(45, 45, 45, 0.5)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(156, 39, 176, 0.2)',
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      '&:hover': {
-                        transform: 'translateY(-10px)',
-                        boxShadow: '0 20px 40px rgba(156, 39, 176, 0.3)',
-                      },
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={project.image}
-                      alt={project.title}
-                      sx={{
-                        borderBottom: '1px solid rgba(156, 39, 176, 0.2)',
-                      }}
-                    />
-                    <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                      <Typography 
-                        gutterBottom 
-                        variant="h5" 
-                        component="h2"
-                        sx={{
-                          color: '#ba68c8',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {project.title}
-                      </Typography>
-                      <Typography 
-                        variant="body2" 
-                        sx={{ 
-                          color: 'rgba(255, 255, 255, 0.7)',
-                          mb: 2,
-                        }}
-                      >
-                        {project.description}
-                      </Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                        {project.tags.map((tag, idx) => (
-                          <Typography
-                            key={idx}
-                            variant="caption"
-                            sx={{
-                              background: 'rgba(156, 39, 176, 0.1)',
-                              color: '#ba68c8',
-                              padding: '4px 8px',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(156, 39, 176, 0.2)',
-                            }}
-                          >
-                            {tag}
-                          </Typography>
-                        ))}
-                      </Box>
-                    </CardContent>
-                    <CardActions sx={{ p: 2, pt: 0 }}>
-                      <Button 
-                        size="small" 
-                        startIcon={<LaunchIcon />}
-                        href={project.demoLink}
-                        target="_blank"
-                        sx={{
-                          color: '#ba68c8',
-                          '&:hover': {
-                            background: 'rgba(156, 39, 176, 0.1)',
-                          },
-                        }}
-                      >
-                        Demo
-                      </Button>
-                      <Button 
-                        size="small" 
-                        startIcon={<GitHubIcon />}
-                        href={project.codeLink}
-                        target="_blank"
-                        sx={{
-                          color: '#ba68c8',
-                          '&:hover': {
-                            background: 'rgba(156, 39, 176, 0.1)',
-                          },
-                        }}
-                      >
-                        Kod
-                      </Button>
-                    </CardActions>
-                  </Card>
+                  <ProjectCard project={project} />
                 </motion.div>
               </Grid>
             ))}
@@ -227,4 +240,4 @@ const Projects = () => {
   );
 };
 
-export default Projects; 
+export default memo(Projects); 

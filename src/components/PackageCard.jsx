@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 export const packages = [
   {
@@ -28,7 +29,7 @@ export const packages = [
   }
 ];
 
-const PackageCard = ({ id, name, price, description, features, color, selected, onSelect }) => (
+const PackageCard = memo(({ id, name, price, description, features, color, selected, onSelect }) => (
   <motion.div
     whileHover={{ scale: 1.02, y: -5 }}
     whileTap={{ scale: 0.98 }}
@@ -38,10 +39,11 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
       position: 'relative',
       overflow: 'hidden',
     }}
+    transition={{ duration: 0.2 }}
   >
     <Box
       sx={{
-        p: 4,
+        p: { xs: 2, md: 4 },
         borderRadius: 4,
         height: '100%',
         background: selected 
@@ -49,9 +51,9 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
           : 'transparent',
         border: '1px solid',
         borderColor: selected ? 'rgba(156, 39, 176, 0.3)' : 'rgba(255, 255, 255, 0.1)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
         position: 'relative',
-        backdropFilter: 'blur(10px)',
+        backdropFilter: { xs: 'none', md: 'blur(10px)' },
         boxShadow: selected 
           ? '0 4px 12px rgba(156, 39, 176, 0.15)'
           : 'none',
@@ -68,6 +70,7 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
+          transition={{ duration: 0.2 }}
           style={{
             position: 'absolute',
             top: 16,
@@ -92,7 +95,8 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
         sx={{
           color: selected ? '#ba68c8' : 'rgba(255, 255, 255, 0.7)',
           fontWeight: selected ? 600 : 400,
-          transition: 'all 0.3s ease'
+          transition: 'all 0.2s ease',
+          fontSize: { xs: '1.1rem', md: '1.25rem' }
         }}
       >
         {name}
@@ -102,7 +106,8 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
         sx={{
           color: selected ? '#ba68c8' : 'rgba(255, 255, 255, 0.7)',
           fontWeight: selected ? 600 : 400,
-          transition: 'all 0.3s ease'
+          transition: 'all 0.2s ease',
+          fontSize: { xs: '2rem', md: '3rem' }
         }}
       >
         {price}
@@ -111,7 +116,8 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
         variant="body1"
         sx={{
           color: 'rgba(255, 255, 255, 0.7)',
-          mt: 0.5
+          mt: 0.5,
+          fontSize: { xs: '0.875rem', md: '1rem' }
         }}
       >
         {description}
@@ -120,8 +126,8 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: 1,
-          mt: 1
+          gap: { xs: 0.5, md: 1 },
+          mt: { xs: 0.5, md: 1 }
         }}
       >
         {features.map((feature, index) => (
@@ -133,6 +139,7 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
               display: 'flex',
               alignItems: 'center',
               gap: 0.5,
+              fontSize: { xs: '0.75rem', md: '0.875rem' }
             }}
           >
             <span style={{ color: '#ba68c8' }}>✓</span>
@@ -142,6 +149,6 @@ const PackageCard = ({ id, name, price, description, features, color, selected, 
       </Box>
     </Box>
   </motion.div>
-);
+));
 
 export default PackageCard; 

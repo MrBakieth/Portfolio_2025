@@ -2,101 +2,101 @@ import { AppBar, Toolbar, Typography, Button, Box, Container, IconButton, Drawer
 import { Link, useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const menuItems = [
+  { text: 'Ana Sayfa', path: '/' },
+  { text: 'Hakkımda', path: '/about' },
+  { text: 'Projeler', path: '/projects' },
+  { text: 'İletişim', path: '/contact' },
+];
+
+const MobileDrawer = memo(({ open, onClose, location }) => (
+  <motion.div
+    initial={{ x: '-100%' }}
+    animate={{ x: 0 }}
+    exit={{ x: '-100%' }}
+    transition={{ type: 'tween', duration: 0.2 }}
+    style={{
+      height: '100%',
+      background: 'rgba(26, 26, 26, 0.98)',
+      backdropFilter: 'none', // Remove blur on mobile
+      borderRight: '1px solid rgba(156, 39, 176, 0.2)',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '20px',
+    }}
+  >
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Typography
+        variant="h5"
+        component={Link}
+        to="/"
+        onClick={onClose}
+        sx={{
+          textDecoration: 'none',
+          background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontWeight: 'bold',
+          letterSpacing: '1px',
+          fontSize: '1.8rem',
+        }}
+      >
+        H. Furkan Yaman
+      </Typography>
+      <IconButton
+        onClick={onClose}
+        sx={{ color: '#ba68c8' }}
+      >
+        <CloseIcon />
+      </IconButton>
+    </Box>
+    <List>
+      {menuItems.map((item) => (
+        <motion.div
+          key={item.path}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.1 }}
+        >
+          <ListItem
+            component={Link}
+            to={item.path}
+            onClick={onClose}
+            sx={{
+              mb: 1.5,
+              borderRadius: '8px',
+              background: location.pathname === item.path ? 'rgba(156, 39, 176, 0.1)' : 'transparent',
+              '&:hover': {
+                background: 'rgba(156, 39, 176, 0.1)',
+              },
+            }}
+          >
+            <ListItemText
+              primary={item.text}
+              sx={{
+                '& .MuiListItemText-primary': {
+                  color: location.pathname === item.path ? '#ba68c8' : 'rgba(255, 255, 255, 0.7)',
+                  fontSize: '1.1rem',
+                  fontWeight: location.pathname === item.path ? 600 : 400,
+                },
+              }}
+            />
+          </ListItem>
+        </motion.div>
+      ))}
+    </List>
+  </motion.div>
+));
 
 const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const menuItems = [
-    { text: 'Ana Sayfa', path: '/' },
-    { text: 'Hakkımda', path: '/about' },
-    { text: 'Projeler', path: '/projects' },
-    { text: 'İletişim', path: '/contact' },
-  ];
-
-  const drawer = (
-    <motion.div
-      initial={{ x: '-100%' }}
-      animate={{ x: 0 }}
-      exit={{ x: '-100%' }}
-      transition={{ type: 'tween', duration: 0.3 }}
-      style={{
-        height: '100%',
-        background: 'rgba(26, 26, 26, 0.98)',
-        backdropFilter: 'blur(10px)',
-        borderRight: '1px solid rgba(156, 39, 176, 0.2)',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '20px',
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography
-          variant="h5"
-          component={Link}
-          to="/"
-          onClick={handleDrawerToggle}
-          sx={{
-            textDecoration: 'none',
-            background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontWeight: 'bold',
-            letterSpacing: '1px',
-            fontSize: '1.8rem',
-          }}
-        >
-          H. Furkan Yaman
-        </Typography>
-        <IconButton
-          onClick={handleDrawerToggle}
-          sx={{ color: '#ba68c8' }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <List>
-        {menuItems.map((item) => (
-          <motion.div
-            key={item.path}
-            whileHover={{ x: 10 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ListItem
-              component={Link}
-              to={item.path}
-              onClick={handleDrawerToggle}
-              sx={{
-                mb: 2,
-                borderRadius: '8px',
-                background: location.pathname === item.path ? 'rgba(156, 39, 176, 0.1)' : 'transparent',
-                '&:hover': {
-                  background: 'rgba(156, 39, 176, 0.1)',
-                },
-              }}
-            >
-              <ListItemText
-                primary={item.text}
-                sx={{
-                  '& .MuiListItemText-primary': {
-                    color: location.pathname === item.path ? '#ba68c8' : 'rgba(255, 255, 255, 0.7)',
-                    fontSize: '1.1rem',
-                    fontWeight: location.pathname === item.path ? 600 : 400,
-                  },
-                }}
-              />
-            </ListItem>
-          </motion.div>
-        ))}
-      </List>
-    </motion.div>
-  );
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen(prev => !prev);
+  }, []);
 
   return (
     <AppBar
@@ -105,7 +105,7 @@ const Navbar = () => {
       elevation={0}
       sx={{
         background: 'rgba(26, 26, 26, 0.95)',
-        backdropFilter: 'blur(8px)',
+        backdropFilter: { xs: 'none', md: 'blur(8px)' }, // Disable blur on mobile
         borderBottom: '1px solid rgba(156, 39, 176, 0.2)',
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
@@ -213,7 +213,7 @@ const Navbar = () => {
       </Container>
 
       {/* Mobile Menu Drawer */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {mobileOpen && (
           <Drawer
             variant="temporary"
@@ -221,7 +221,7 @@ const Navbar = () => {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true,
+              keepMounted: false, // Changed to false to prevent memory leaks
             }}
             sx={{
               display: { xs: 'block', md: 'none' },
@@ -230,10 +230,11 @@ const Navbar = () => {
                 maxWidth: '300px',
                 background: 'transparent',
                 border: 'none',
+                WebkitTapHighlightColor: 'transparent',
               },
             }}
           >
-            {drawer}
+            <MobileDrawer open={mobileOpen} onClose={handleDrawerToggle} location={location} />
           </Drawer>
         )}
       </AnimatePresence>
@@ -241,4 +242,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default memo(Navbar); 

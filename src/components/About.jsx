@@ -1,5 +1,6 @@
 import { Box, Container, Typography, Grid, Paper, LinearProgress, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -83,14 +84,13 @@ const About = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
         position: 'relative',
         overflow: 'hidden',
-        pt: 8,
-        pb: 6,
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+        WebkitTapHighlightColor: 'transparent',
       }}
     >
-      {/* Animated background elements */}
+      {/* Animated background lights */}
       <Box
         sx={{
           position: 'absolute',
@@ -100,10 +100,10 @@ const About = () => {
           bottom: 0,
           overflow: 'hidden',
           zIndex: 0,
+          display: { xs: 'none', md: 'block' },
         }}
       >
-        {[...Array(5)].map((_, i) => {
-          // Pre-calculate random values
+        {[...Array(3)].map((_, i) => {
           const xPos = (i * 20) + 10;
           const yPos = (i * 15) + 10;
           const width = 300 + (i * 50);
@@ -118,21 +118,21 @@ const About = () => {
                 background: 'linear-gradient(45deg, #9c27b0 30%, #ba68c8 90%)',
                 borderRadius: '50%',
                 filter: 'blur(100px)',
-                opacity: 0.15,
+                opacity: 0.1,
                 width,
                 height,
               }}
               animate={{
                 x: [xPos, -xPos, xPos],
                 y: [yPos, -yPos, yPos],
-                scale: [1, 1.8, 1],
+                scale: [1, 1.5, 1],
                 rotate: [0, 180, 0],
               }}
               transition={{
                 duration: duration,
                 repeat: Infinity,
-                repeatType: 'reverse',
-                ease: "easeInOut"
+                repeatType: "reverse",
+                ease: "linear"
               }}
               initial={{
                 x: xPos,
@@ -143,7 +143,14 @@ const About = () => {
         })}
       </Box>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: { xs: 11, md: 12 },
+          position: 'relative', 
+          zIndex: 1 
+        }}
+      >
         <motion.div
           variants={staggerContainer}
           initial="initial"
@@ -447,4 +454,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default memo(About); 
