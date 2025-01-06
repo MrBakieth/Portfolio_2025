@@ -9,7 +9,7 @@ const log = (message, data) => {
 
 // Production ve development için API URL'lerini ayarla
 const API_URL = import.meta.env.PROD 
-  ? '/api'  // Production'da Netlify proxy kullanacak
+  ? 'https://hfurkanyaman.netlify.app/.netlify/functions/api'  // Production URL
   : 'http://localhost:5000/api'; // Development URL
 
 log('Current environment:', import.meta.env.MODE);
@@ -21,7 +21,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15 saniye timeout
+  timeout: 15000, // 15 saniye timeout  
 });
 
 // Request interceptor

@@ -10,7 +10,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: '*',
+  origin: ['https://hfurkanyaman.netlify.app', 'http://localhost:5173', 'http://localhost:5174'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -29,6 +29,19 @@ app.use((req, res, next) => {
   if (req.method !== 'GET') {
     console.log('Request Body:', req.body);
   }
+  next();
+});
+
+// Add response logging middleware
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function (data) {
+    console.log('Response:', {
+      statusCode: res.statusCode,
+      body: data
+    });
+    originalSend.call(this, data);
+  };
   next();
 });
 
@@ -104,5 +117,22 @@ const handler = serverless(app);
 module.exports.handler = async (event, context) => {
   // Keep alive MongoDB connection
   context.callbackWaitsForEmptyEventLoop = false;
-  return handler(event, context);
+  
+  // Log incoming request
+  console.log('Incoming request:', {
+    path: event.path,
+    httpMethod: event.httpMethod,
+    headers: event.headers,
+    body: event.body ? JSON.parse(event.body) : undefined
+  });
+  
+  const result = await handler(event, context);
+  
+  // Log response
+  console.log('Response:', {
+    statusCode: result.statusCode,
+    body: result.body
+  });
+  
+  return result;
 }; 
