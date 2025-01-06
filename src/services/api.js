@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.PROD 
+  ? '/api'  // Production'da Netlify proxy kullanacak
+  : 'http://localhost:5000/api'; // Development ortamı
 
 // Axios instance
 const api = axios.create({
