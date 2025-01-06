@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dependencies
 /node_modules
 /.pnp
@@ -10,6 +9,7 @@
 # Production
 /build
 /dist
+/dist-ssr
 
 # Environment variables
 .env
@@ -19,11 +19,6 @@
 .env.production.local
 
 # Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-=======
-# Logs
 logs
 *.log
 npm-debug.log*
@@ -31,12 +26,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
->>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
 
 # Editor directories and files
 .vscode/*
@@ -48,10 +37,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-<<<<<<< HEAD
-=======
 
-.env
-.env.local
-.DS_Store
->>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
+# Local files
+*.local

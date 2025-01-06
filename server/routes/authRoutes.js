@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-<<<<<<< HEAD
 // @desc    Register admin user
 // @route   POST /api/auth/register
 // @access  Public
@@ -43,8 +42,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-=======
->>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public

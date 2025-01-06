@@ -26,10 +26,7 @@
     "mongoose": "^8.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-helmet-async": "^2.0.5",
-=======
->>>>>>> 148eca0285ff5beb08553773aba47b4f44263d21
     "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
