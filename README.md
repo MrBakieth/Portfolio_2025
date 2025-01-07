@@ -1,6 +1,5 @@
 # Modern Portfolio Website
 
-![Portfolio Preview](https://your-image-url.com/preview.png)
 
 ## 🌟 Özellikler
 
