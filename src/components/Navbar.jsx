@@ -44,7 +44,7 @@ const MobileDrawer = memo(({ open, onClose, location }) => (
           fontSize: '1.8rem',
         }}
       >
-        John Anderson
+        Ahmet Yılmaz
       </Typography>
       <IconButton
         onClick={onClose}
@@ -127,7 +127,7 @@ const Navbar = () => {
               fontSize: '1.8rem',
             }}
           >
-            John Anderson
+            Ahmet Yılmaz
           </Typography>
 
           {/* Desktop Menu */}

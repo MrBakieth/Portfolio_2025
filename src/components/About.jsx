@@ -18,77 +18,77 @@ const staggerContainer = {
 
 const skills = {
   frontend: [
-    { name: 'HTML', level: 90 },
-    { name: 'CSS', level: 85 },
-    { name: 'Sass', level: 80 },
-    { name: 'React.js', level: 85 },
-    { name: 'Vue.js', level: 75 },
+    { name: 'HTML', level: 85 },
+    { name: 'CSS', level: 80 },
+    { name: 'Tailwind CSS', level: 85 },
+    { name: 'React.js', level: 80 },
+    { name: 'Next.js', level: 75 },
   ],
   backend: [
-    { name: 'Python', level: 80 },
-    { name: 'Django', level: 75 },
-    { name: 'Node.js', level: 70 },
-    { name: 'Express.js', level: 70 },
-    { name: 'FastAPI', level: 65 },
+    { name: 'Node.js', level: 75 },
+    { name: 'Express.js', level: 75 },
+    { name: 'PHP', level: 70 },
+    { name: 'Laravel', level: 70 },
+    { name: 'MySQL', level: 65 },
   ],
   database: [
-    { name: 'PostgreSQL', level: 75 },
-    { name: 'MongoDB', level: 70 },
-    { name: 'Redis', level: 60 },
+    { name: 'MongoDB', level: 80 },
+    { name: 'PostgreSQL', level: 70 },
+    { name: 'Redis', level: 65 },
   ],
   tools: [
     { name: 'Git', level: 85 },
     { name: 'Docker', level: 70 },
-    { name: 'AWS', level: 65 },
-    { name: 'Figma', level: 75 },
+    { name: 'Jira', level: 75 },
+    { name: 'Figma', level: 70 },
   ],
 };
 
 const education = [
   {
-    school: 'Stanford University',
-    degree: 'Master of Science in Computer Science',
+    school: 'İstanbul Teknik Üniversitesi',
+    degree: 'Bilgisayar Mühendisliği Yüksek Lisans',
     year: '2020-2022',
   },
   {
-    school: 'University of California, Berkeley',
-    degree: 'Bachelor of Science in Computer Science',
+    school: 'Yıldız Teknik Üniversitesi',
+    degree: 'Bilgisayar Mühendisliği Lisans',
     year: '2016-2020',
   },
 ];
 
 const experience = [
   {
-    title: 'Senior Full Stack Developer',
-    company: 'TechCorp Solutions',
-    period: '2022-Present',
-    description: 'Leading a team of developers in building scalable web applications using React, Node.js, and AWS. Implemented microservices architecture and improved system performance by 40%.',
+    title: 'Kıdemli Full Stack Geliştirici',
+    company: 'Teknoloji A.Ş.',
+    period: '2022-Günümüz',
+    description: 'Mikroservis mimarisi ile ölçeklenebilir web uygulamaları geliştiren ekibe liderlik ediyorum. React, Node.js ve Docker teknolojilerini kullanarak sistem performansını %45 artırdık.',
   },
   {
-    title: 'Software Engineer',
-    company: 'InnovateTech',
+    title: 'Yazılım Geliştirici',
+    company: 'Dijital Çözümler Ltd.',
     period: '2020-2022',
-    description: 'Developed and maintained multiple web applications using Python, Django, and Vue.js. Collaborated with cross-functional teams to deliver high-quality software solutions.',
+    description: 'E-ticaret ve kurumsal web uygulamaları geliştirdim. PHP, Laravel ve Vue.js teknolojilerini kullanarak müşteri odaklı çözümler ürettim.',
   },
 ];
 
 const certifications = [
   {
-    name: 'AWS Certified Solutions Architect',
+    name: 'AWS Solution Architect Associate',
     issuer: 'Amazon Web Services',
     year: '2023',
   },
   {
-    name: 'Professional Scrum Master I',
-    issuer: 'Scrum.org',
+    name: 'Laravel Certified Developer',
+    issuer: 'Laravel',
     year: '2022',
   },
 ];
 
 const languages = [
-  { name: 'English', level: 'Native' },
-  { name: 'Spanish', level: 'B2' },
-  { name: 'French', level: 'A2' },
+  { name: 'Türkçe', level: 'Anadil' },
+  { name: 'İngilizce', level: 'C1' },
+  { name: 'Almanca', level: 'A2' },
 ];
 
 const About = () => {
@@ -203,7 +203,7 @@ const About = () => {
                   }}
                 >
                   <Typography variant="body1" paragraph sx={{ color: 'white', lineHeight: 1.8 }}>
-                    As a passionate Full Stack Developer with over 5 years of experience, I specialize in building scalable web applications using modern technologies. My expertise spans across frontend and backend development, with a strong focus on React.js, Python, and cloud technologies. I have a proven track record of leading development teams and delivering successful projects for various industries. My approach combines technical excellence with creative problem-solving to create efficient, user-friendly solutions.
+                    Merhaba! Ben Ahmet, 27 yaşında tutkulu bir Full Stack Yazılım Geliştiricisiyim. 5 yılı aşkın deneyimimle modern web teknolojilerini kullanarak kullanıcı dostu ve ölçeklenebilir uygulamalar geliştiriyorum. Frontend'de React.js ve Next.js, backend'de Node.js ve Laravel teknolojilerinde uzmanım. Mikroservis mimarisi ve konteyner teknolojileri konusunda deneyimliyim. Sürekli öğrenmeye ve kendimi geliştirmeye odaklanıyor, yeni teknolojileri yakından takip ediyorum.
                   </Typography>
                 </Paper>
               </motion.div>
