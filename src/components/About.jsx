@@ -18,65 +18,77 @@ const staggerContainer = {
 
 const skills = {
   frontend: [
-    { name: 'HTML', level: 80 },
-    { name: 'CSS', level: 75 },
-    { name: 'Tailwind CSS', level: 80 },
-    { name: 'Bootstrap', level: 65 },
-    { name: 'React.js', level: 80 },
+    { name: 'HTML', level: 90 },
+    { name: 'CSS', level: 85 },
+    { name: 'Sass', level: 80 },
+    { name: 'React.js', level: 85 },
+    { name: 'Vue.js', level: 75 },
   ],
   backend: [
-    { name: 'Node.js', level: 60 },
-    { name: 'Express.js', level: 60 },
-    { name: 'C#', level: 35 },
-    { name: 'ASP.NET', level: 35 },
-    { name: 'ASP.NET MVC', level: 35 },
+    { name: 'Python', level: 80 },
+    { name: 'Django', level: 75 },
+    { name: 'Node.js', level: 70 },
+    { name: 'Express.js', level: 70 },
+    { name: 'FastAPI', level: 65 },
   ],
   database: [
-    { name: 'MongoDB', level: 50 },
-    { name: 'PostgreSQL', level: 30 },
-    { name: 'MS SQL Server', level: 30 },
+    { name: 'PostgreSQL', level: 75 },
+    { name: 'MongoDB', level: 70 },
+    { name: 'Redis', level: 60 },
   ],
   tools: [
-    { name: 'Git', level: 70 },
-    { name: 'Vite', level: 80 },
-    { name: 'Next.js', level: 60 },
-    { name: 'Canva', level: 65 },
+    { name: 'Git', level: 85 },
+    { name: 'Docker', level: 70 },
+    { name: 'AWS', level: 65 },
+    { name: 'Figma', level: 75 },
   ],
 };
 
 const education = [
   {
-    school: 'Özel Trakya Koleji',
-    degree: 'Anadolu Lisesi',
-    year: '2014-2018',
+    school: 'Stanford University',
+    degree: 'Master of Science in Computer Science',
+    year: '2020-2022',
   },
   {
-    school: 'Lefke Avrupa Üniversitesi',
-    degree: 'Yönetim Bilişim Sistemleri (İngilizce)',
-    year: '2018-2024',
+    school: 'University of California, Berkeley',
+    degree: 'Bachelor of Science in Computer Science',
+    year: '2016-2020',
   },
 ];
 
 const experience = [
   {
-    title: 'Yazılım Geliştirici - Staj',
-    company: 'Politem Dynamic Plastic',
-    period: 'Yaz 2023',
-    description: 'Yazılım geliştirici olarak Politem Plastik firmasının bünyesinde stajımı tamamladım. İçerisinde bulunduğum etkinlikler sayesinde analitik düşünme becerimi, veri yapıları konusunda ve devamında takım içi görev ve sorumluluklar konusundaki becerilerimi geliştirdim.',
+    title: 'Senior Full Stack Developer',
+    company: 'TechCorp Solutions',
+    period: '2022-Present',
+    description: 'Leading a team of developers in building scalable web applications using React, Node.js, and AWS. Implemented microservices architecture and improved system performance by 40%.',
+  },
+  {
+    title: 'Software Engineer',
+    company: 'InnovateTech',
+    period: '2020-2022',
+    description: 'Developed and maintained multiple web applications using Python, Django, and Vue.js. Collaborated with cross-functional teams to deliver high-quality software solutions.',
   },
 ];
 
 const certifications = [
   {
-    name: 'Web Development Bootcamp',
-    issuer: 'Udemy',
-    year: '2024',
+    name: 'AWS Certified Solutions Architect',
+    issuer: 'Amazon Web Services',
+    year: '2023',
+  },
+  {
+    name: 'Professional Scrum Master I',
+    issuer: 'Scrum.org',
+    year: '2022',
   },
 ];
 
 const languages = [
-  { name: 'Türkçe', level: 'Ana dil' },
-  { name: 'İngilizce', level: 'B2' },
+  { name: 'English', level: 'Native' },
+  { name: 'Spanish', level: 'B2' },
+  { name: 'French', level: 'A2' },
 ];
 
 const About = () => {
@@ -191,7 +203,7 @@ const About = () => {
                   }}
                 >
                   <Typography variant="body1" paragraph sx={{ color: 'white', lineHeight: 1.8 }}>
-                    Kendimi sürekli geliştiren ve öğrenmeye açık 24 yaşında bir web geliştiriciyim. Son iki yıldır HTML, CSS, JavaScript, Node.js ve MongoDB gibi teknolojilerle projeler geliştiriyorum. Kullanıcı deneyimini önceliklendirerek modern ve işlevsel tasarımlar oluşturmayı hedefliyorum. Lefke Avrupa Üniversitesi Yönetim Bilişim Sistemleri bölümünden mezun oldum ve analitik düşünme ile problem çözme yetkinliklerimi geliştirdim. React.js ve Tailwind CSS gibi araçlarla responsive uygulamalar geliştirme konusunda bilgiliyim. Teknolojiye olan tutkumla, uzman bir web geliştirici olmayı hedefliyorum.
+                    As a passionate Full Stack Developer with over 5 years of experience, I specialize in building scalable web applications using modern technologies. My expertise spans across frontend and backend development, with a strong focus on React.js, Python, and cloud technologies. I have a proven track record of leading development teams and delivering successful projects for various industries. My approach combines technical excellence with creative problem-solving to create efficient, user-friendly solutions.
                   </Typography>
                 </Paper>
               </motion.div>

@@ -44,7 +44,7 @@ const MobileDrawer = memo(({ open, onClose, location }) => (
           fontSize: '1.8rem',
         }}
       >
-        H. Furkan Yaman
+        John Anderson
       </Typography>
       <IconButton
         onClick={onClose}
@@ -127,7 +127,7 @@ const Navbar = () => {
               fontSize: '1.8rem',
             }}
           >
-            H. Furkan Yaman
+            John Anderson
           </Typography>
 
           {/* Desktop Menu */}
