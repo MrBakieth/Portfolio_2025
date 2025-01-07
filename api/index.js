@@ -1,10 +1,9 @@
 const express = require('express');
-const serverless = require('serverless-http');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const authRoutes = require('../../server/routes/authRoutes');
-const messageRoutes = require('../../server/routes/messageRoutes');
-const projectRoutes = require('../../server/routes/projectRoutes');
+const authRoutes = require('../server/routes/authRoutes');
+const messageRoutes = require('../server/routes/messageRoutes');
+const projectRoutes = require('../server/routes/projectRoutes');
 
 const app = express();
 
@@ -85,10 +84,10 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Routes - Note: No need to prefix with /api as Netlify handles that
-app.use('/messages', messageRoutes);
-app.use('/auth', authRoutes);
-app.use('/projects', projectRoutes);
+// Routes
+app.use('/api/messages', messageRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -113,35 +112,4 @@ app.use((req, res) => {
   res.status(404).json({ message: `Route ${req.url} not found` });
 });
 
-// Export the serverless function
-const handler = serverless(app);
-module.exports.handler = async (event, context) => {
-  // Keep alive MongoDB connection
-  context.callbackWaitsForEmptyEventLoop = false;
-  
-  // Log incoming request
-  console.log('Incoming request:', {
-    path: event.path,
-    httpMethod: event.httpMethod,
-    headers: event.headers,
-    body: event.body ? JSON.parse(event.body) : undefined
-  });
-  
-  try {
-    const result = await handler(event, context);
-    
-    // Log response
-    console.log('Response:', {
-      statusCode: result.statusCode,
-      body: result.body
-    });
-    
-    return result;
-  } catch (error) {
-    console.error('Handler error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Internal server error' })
-    };
-  }
-}; 
+module.exports = app; 
